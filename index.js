@@ -41,7 +41,7 @@ app.get('/liga/:id/live', async (req, res) => {
 app.get('/liga/:id/standings', async (req, res) => {
   try {
     const leagueId = parseInt(req.params.id);
-    const season = 2024; // usa 2023 se 2024 ainda não tiver começado
+    const season = 2023; // usa 2023 se 2024 ainda não tiver começado
 
     const apiResponse = await axios.get(`https://v3.football.api-sports.io/standings?league=${leagueId}&season=${season}`, {
       headers: { 'x-apisports-key': API_KEY }
