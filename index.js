@@ -43,7 +43,7 @@ app.listen(PORT, () => {
 app.get('/liga-portuguesa/standings', async (req, res) => {
   try {
     const leagueId = 94; // Liga Portugal
-    const season = 2024; // 2024, se ainda não começou a 2025
+    const season = 2023; // 2023/2024, se ainda não começou a 2025
 
     const apiResponse = await axios.get(`https://v3.football.api-sports.io/standings?league=${leagueId}&season=${season}`, {
       headers: {
