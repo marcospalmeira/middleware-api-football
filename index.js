@@ -42,8 +42,8 @@ app.listen(PORT, () => {
 
 app.get('/liga-portuguesa/standings', async (req, res) => {
   try {
-    const leagueId = 94; // ID da Primeira Liga (verificado via API-Football)
-    const season = 2024; // ou atual
+    const leagueId = 94; // Liga Portugal
+    const season = 2025; // ou 2024, se ainda não começou a 2025
 
     const apiResponse = await axios.get(`https://v3.football.api-sports.io/standings?league=${leagueId}&season=${season}`, {
       headers: {
@@ -52,6 +52,7 @@ app.get('/liga-portuguesa/standings', async (req, res) => {
     });
 
     const standings = apiResponse.data.response[0].league.standings[0];
+
     const tabela = standings.map(team => ({
       rank: team.rank,
       team: team.team.name,
@@ -60,7 +61,8 @@ app.get('/liga-portuguesa/standings', async (req, res) => {
 
     res.json(tabela);
   } catch (error) {
-    console.error("Erro na classificação:", error.message);
+    console.error("Erro na classificação:", error.response?.data || error.message);
     res.status(500).json({ error: 'Erro ao obter classificação' });
   }
 });
+
