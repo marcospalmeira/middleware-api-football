@@ -1,3 +1,7 @@
+app.get('/', (req, res) => {
+  res.send('API Garmin Proxy ativa! Usa /liga-portuguesa/live para dados ao vivo.');
+});
+
 import express from 'express';
 import axios from 'axios';
 import dotenv from 'dotenv';
