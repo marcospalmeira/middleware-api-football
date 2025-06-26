@@ -1,23 +1,21 @@
 const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
-require('dotenv').config(); // usa .env se necessário
+require('dotenv').config();
 
 const app = express();
 const port = process.env.PORT || 3000;
 app.use(cors());
 
-const API_KEY = process.env.API_KEY || '76c5b4c1fb0c65a606c5901423ec7a42'; // tua API key da API-Football
+const API_KEY = process.env.API_KEY || '76c5b4c1fb0c65a606c5901423ec7a42';
 
-// ➤ LIVE FIXTURES DE LIGA ESPECÍFICA
+// 🔁 LIVE RESULTS de liga selecionada
 app.get('/liga/:id/live', async (req, res) => {
   try {
     const leagueId = parseInt(req.params.id);
 
     const apiResponse = await axios.get('https://v3.football.api-sports.io/fixtures?live=all', {
-      headers: {
-        'x-apisports-key': API_KEY
-      }
+      headers: { 'x-apisports-key': API_KEY }
     });
 
     const jogos = apiResponse.data.response.filter(jogo =>
@@ -39,18 +37,14 @@ app.get('/liga/:id/live', async (req, res) => {
   }
 });
 
-// ➤ CLASSIFICAÇÃO DA LIGA SELECIONADA
+// 📊 CLASSIFICAÇÃO da liga selecionada
 app.get('/liga/:id/standings', async (req, res) => {
   try {
     const leagueId = parseInt(req.params.id);
-
-    // ⚠️ Alternar entre 2023 e 2024 dependendo da época atual
-    const season = 2023;
+    const season = 2023; // usa 2023 se 2024 ainda não tiver começado
 
     const apiResponse = await axios.get(`https://v3.football.api-sports.io/standings?league=${leagueId}&season=${season}`, {
-      headers: {
-        'x-apisports-key': API_KEY
-      }
+      headers: { 'x-apisports-key': API_KEY }
     });
 
     const standings = apiResponse.data.response[0].league.standings[0];
@@ -68,12 +62,11 @@ app.get('/liga/:id/standings', async (req, res) => {
   }
 });
 
-// ➤ ROOT PARA TESTE (opcional)
+// Rota raiz (opcional)
 app.get('/', (req, res) => {
-  res.send('API Middleware para Garmin – Liga ao Vivo & Classificação');
+  res.send('🟢 API Garmin Futebol – Resultados & Classificação por Liga');
 });
 
 app.listen(port, () => {
-  console.log(`Servidor a correr em http://localhost:${port}`);
+  console.log(`✅ Servidor a correr em http://localhost:${port}`);
 });
-
