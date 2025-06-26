@@ -39,3 +39,28 @@ app.get('/liga-portuguesa/live', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Servidor disponível em http://localhost:${PORT}`);
 });
+
+app.get('/liga-portuguesa/standings', async (req, res) => {
+  try {
+    const leagueId = 94; // ID da Primeira Liga (verificado via API-Football)
+    const season = 2024; // ou atual
+
+    const apiResponse = await axios.get(`https://v3.football.api-sports.io/standings?league=${leagueId}&season=${season}`, {
+      headers: {
+        'x-apisports-key': API_KEY
+      }
+    });
+
+    const standings = apiResponse.data.response[0].league.standings[0];
+    const tabela = standings.map(team => ({
+      rank: team.rank,
+      team: team.team.name,
+      points: team.points
+    }));
+
+    res.json(tabela);
+  } catch (error) {
+    console.error("Erro na classificação:", error.message);
+    res.status(500).json({ error: 'Erro ao obter classificação' });
+  }
+});
